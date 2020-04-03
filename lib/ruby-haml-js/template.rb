@@ -4,6 +4,13 @@ module RubyHamlJs
   class Template < Tilt::Template
     self.default_mime_type = 'application/javascript'
 
+    def self.call(input)
+      filename = input[:filename]
+      template = new(filename)
+
+      { data: template.render }
+    end
+
     def self.engine_initialized?
       defined? ::ExecJS
     end
@@ -12,8 +19,7 @@ module RubyHamlJs
       require_template_library 'execjs'
     end
 
-    def prepare
-    end
+    def prepare; end
 
     # Compiles the template using HAML-JS
     #
